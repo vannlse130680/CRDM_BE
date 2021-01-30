@@ -48,6 +48,8 @@ public class Project {
 
     private Client client;
 
-
+    @OneToMany
+    @JoinColumn(name ="projectId",insertable = false, updatable = false)
+    private List<ProjectAssign> projectAssign;
 
 }

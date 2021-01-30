@@ -23,7 +23,7 @@ public class ClientController {
     public ResponseEntity getAllClient(){
         try {
             List<Client> clientList = IClientService.getAllClient();
-            System.out.println(clientList);
+
             if (clientList == null) {
                 return new ResponseEntity("no client found", HttpStatus.OK);
             } else {

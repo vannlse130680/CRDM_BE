@@ -2,16 +2,22 @@ package com.capstone.crdm.controllers;
 
 import com.capstone.crdm.entities.Client;
 import com.capstone.crdm.entities.Project;
+import com.capstone.crdm.entities.ProjectAssign;
+import com.capstone.crdm.entities.User;
+import com.capstone.crdm.request.CreateProjectReq;
 import com.capstone.crdm.services.IClientService;
+import com.capstone.crdm.services.IProjectAssignService;
 import com.capstone.crdm.services.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,15 +25,14 @@ import java.util.List;
 public class ProjectController {
     IProjectService projectService;
     IClientService clientService;
+    IProjectAssignService projectAssignService;
 
     @Autowired
-    public ProjectController(IProjectService projectService, IClientService clientService) {
+    public ProjectController(IProjectService projectService, IClientService clientService, IProjectAssignService projectAssignService) {
         this.projectService = projectService;
         this.clientService = clientService;
+        this.projectAssignService = projectAssignService;
     }
-
-
-
 
 
     @CrossOrigin
@@ -48,24 +53,39 @@ public class ProjectController {
 
     @CrossOrigin
     @PostMapping("/project")
-    public ResponseEntity createProject(@RequestBody Project request) {
+    @Transactional
+    public ResponseEntity createProject(@RequestBody CreateProjectReq request) {
         Project project = new Project();
         try {
 
 
-            project.setProduct(request.getProduct());
-            project.setDeadline(request.getDeadline());
+            project.setProduct(request.getProject().getProduct());
+            project.setDeadline(request.getProject().getDeadline());
             project.setStatus(1);
-            project.setRequirement(request.getRequirement());
+            project.setRequirement(request.getProject().getRequirement());
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             project.setCreatedDate(timestamp);
-            project.setClientId(request.getClientId());
-            
+            project.setClientId(request.getProject().getClientId());
 
-            Client client = clientService.getClientById(request.getClientId());
+
+            Client client = clientService.getClientById(request.getProject().getClientId());
 
             project.setClient(client);
-           project = projectService.createProject(project);
+            project = projectService.createProject(project);
+            List<User> userList = request.getUsers();
+
+            List<ProjectAssign> projectAssignList = new ArrayList<>();
+            for (User u : userList
+            ) {
+                ProjectAssign pa = new ProjectAssign();
+                pa.setProjectId(project.getId());
+                pa.setUserId(u.getId());
+                projectAssignList.add(pa);
+            }
+            System.out.println(projectAssignList);
+
+            projectAssignService.doProjectAssign(projectAssignList);
+            System.out.println(project.getCreatedDate());
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
