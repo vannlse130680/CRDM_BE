@@ -22,4 +22,9 @@ public class UserServiceIml implements IUserService {
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
+
+    @Override
+    public List<User> findUserByProjectId(int id) {
+        return userRepository.findUserAssignByProjectId(id);
+    }
 }

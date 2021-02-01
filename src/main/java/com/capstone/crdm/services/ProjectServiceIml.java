@@ -26,4 +26,9 @@ public class ProjectServiceIml implements IProjectService {
     public Project createProject(Project project) {
         return projectRepository.saveAndFlush(project);
     }
+
+    @Override
+    public Project findProjectbyId(int id) {
+        return projectRepository.findById(id).get();
+    }
 }

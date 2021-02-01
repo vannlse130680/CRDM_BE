@@ -8,6 +8,7 @@ import com.capstone.crdm.request.CreateProjectReq;
 import com.capstone.crdm.services.IClientService;
 import com.capstone.crdm.services.IProjectAssignService;
 import com.capstone.crdm.services.IProjectService;
+import com.capstone.crdm.utilities.CRDMMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,21 @@ public class ProjectController {
         this.projectAssignService = projectAssignService;
     }
 
+    @CrossOrigin
+    @GetMapping("/project/{id}")
+    public ResponseEntity getProjectById(@PathVariable("id") int id) {
+        try {
+            Project project = projectService.findProjectbyId(id);
 
+            if (project == null) {
+                return new ResponseEntity("no client found", HttpStatus.OK);
+            } else {
+                return new ResponseEntity(project, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity(new CRDMMessage(e.getMessage()),HttpStatus.CONFLICT);
+        }
+    }
     @CrossOrigin
     @GetMapping("/project")
     public ResponseEntity getAllClient() {

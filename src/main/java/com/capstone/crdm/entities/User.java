@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,5 +45,9 @@ public class User {
     @Basic
     @Column(name = "roleId")
     private int roleId;
+
+    @OneToMany
+    @JoinColumn(name ="userId",insertable = false, updatable = false)
+    private List<ProjectAssign> projectAssign;
 
 }

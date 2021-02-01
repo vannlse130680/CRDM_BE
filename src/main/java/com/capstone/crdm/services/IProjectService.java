@@ -8,4 +8,6 @@ public interface IProjectService {
     List<Project> getAllProject();
 
     Project createProject(Project project);
+
+    Project findProjectbyId(int id);
 }

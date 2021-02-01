@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IUserService {
     List<User> getAllUser();
+
+    List<User> findUserByProjectId(int id);
 }
