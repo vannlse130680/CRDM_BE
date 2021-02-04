@@ -39,7 +39,7 @@ public class Project {
     private int status;
 
     @Basic
-    @Column(name = "clientId",  updatable = false)
+    @Column(name = "clientId")
 
     private int clientId;
 

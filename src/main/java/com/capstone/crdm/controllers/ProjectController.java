@@ -37,6 +37,7 @@ public class ProjectController {
 
     @CrossOrigin
     @GetMapping("/project/{id}")
+    //Get project by projectID
     public ResponseEntity getProjectById(@PathVariable("id") int id) {
         try {
             Project project = projectService.findProjectbyId(id);
@@ -47,11 +48,13 @@ public class ProjectController {
                 return new ResponseEntity(project, HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()),HttpStatus.CONFLICT);
+            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
         }
     }
+
     @CrossOrigin
     @GetMapping("/project")
+    //get All project
     public ResponseEntity getAllClient() {
         try {
             List<Project> projectList = projectService.getAllProject();
@@ -67,8 +70,29 @@ public class ProjectController {
     }
 
     @CrossOrigin
+    @GetMapping("/projectAssign/{id}")
+    @Transactional
+    // test cho update proejct with assign
+    public ResponseEntity getAllProjectAssignByProjecId(@PathVariable("id") int id) {
+        try {
+            List<ProjectAssign> projectAssignList = projectAssignService.findProjectAssignByProId(id);
+
+            if (projectAssignList == null) {
+                return new ResponseEntity("no client found", HttpStatus.OK);
+            } else {
+
+                return new ResponseEntity(projectAssignList, HttpStatus.OK);
+
+            }
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
+
+    @CrossOrigin
     @PostMapping("/project")
     @Transactional
+    //Create new project
     public ResponseEntity createProject(@RequestBody CreateProjectReq request) {
         Project project = new Project();
         try {
@@ -86,7 +110,11 @@ public class ProjectController {
             Client client = clientService.getClientById(request.getProject().getClientId());
 
             project.setClient(client);
+
+            //create first
             project = projectService.createProject(project);
+
+            //assign users
             List<User> userList = request.getUsers();
 
             List<ProjectAssign> projectAssignList = new ArrayList<>();
@@ -97,10 +125,58 @@ public class ProjectController {
                 pa.setUserId(u.getId());
                 projectAssignList.add(pa);
             }
-            System.out.println(projectAssignList);
 
-            projectAssignService.doProjectAssign(projectAssignList);
-            System.out.println(project.getCreatedDate());
+
+            List<ProjectAssign> projectAssignResult = (List<ProjectAssign>) projectAssignService.doProjectAssign(projectAssignList);
+            project.setProjectAssign(projectAssignResult);
+
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity(project, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PutMapping("/project")
+    @Transactional
+    public ResponseEntity updateProject(@RequestBody CreateProjectReq request) {
+        Project project = projectService.findProjectbyId(request.getProject().getId());
+        try {
+
+
+            project.setProduct(request.getProject().getProduct());
+            project.setDeadline(request.getProject().getDeadline());
+            project.setStatus(request.getProject().getStatus());
+            project.setRequirement(request.getProject().getRequirement());
+//            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//            project.setCreatedDate(timestamp);
+            project.setClientId(request.getProject().getClientId());
+
+
+            Client client = clientService.getClientById(request.getProject().getClientId());
+
+            project.setClient(client);
+            project = projectService.createProject(project);
+
+            //remove old
+            List<ProjectAssign> projectAssignListOld = projectAssignService.findProjectAssignByProId(request.getProject().getId());
+            projectAssignService.deleteAllProjectAssignByProjectId(projectAssignListOld);
+
+            //add new
+            List<User> userList = request.getUsers();
+
+            List<ProjectAssign> projectAssignListNew = new ArrayList<>();
+            for (User u : userList
+            ) {
+                ProjectAssign pa = new ProjectAssign();
+                pa.setProjectId(project.getId());
+                pa.setUserId(u.getId());
+                projectAssignListNew.add(pa);
+            }
+//            System.out.println(projectAssignListNew);
+
+            projectAssignService.doProjectAssign(projectAssignListNew);
+//            System.out.println(project.getCreatedDate());
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }

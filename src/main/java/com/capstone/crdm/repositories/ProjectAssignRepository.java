@@ -9,4 +9,9 @@ import java.util.List;
 public interface ProjectAssignRepository extends CrudRepository<ProjectAssign, Integer> {
     @Override
     <S extends ProjectAssign> Iterable<S> saveAll(Iterable<S> iterable);
+
+    @Override
+    void deleteAll(Iterable<? extends ProjectAssign> iterable);
+
+    List<ProjectAssign> findByProjectId(int projectId);
 }

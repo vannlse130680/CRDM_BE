@@ -21,4 +21,14 @@ public class ProjectAssignServiceIml implements IProjectAssignService {
     public Iterable<ProjectAssign> doProjectAssign(List<ProjectAssign> projectAssignList) {
         return projectAssignRepository.saveAll(projectAssignList);
     }
+
+    @Override
+    public List<ProjectAssign> findProjectAssignByProId(int projectId) {
+        return projectAssignRepository.findByProjectId(projectId);
+    }
+
+    @Override
+    public void deleteAllProjectAssignByProjectId(List<ProjectAssign> projectAssignList) {
+        projectAssignRepository.deleteAll(projectAssignList);
+    }
 }
