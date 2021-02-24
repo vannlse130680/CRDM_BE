@@ -182,4 +182,34 @@ public class ProjectController {
         }
         return new ResponseEntity(project, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @PutMapping("/projectSimple")
+    @Transactional
+    public ResponseEntity updateProjectSimple(@RequestBody Project request) {
+        Project project = projectService.findProjectbyId(request.getId());
+        System.out.println("hahaha");
+        try {
+
+
+            project.setProduct(request.getProduct());
+            project.setDeadline(request.getDeadline());
+            project.setStatus(request.getStatus());
+
+//            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//            project.setCreatedDate(timestamp);
+            project.setClientId(request.getClientId());
+
+
+            Client client = clientService.getClientById(request.getClientId());
+
+            project.setClient(client);
+            project = projectService.createProject(project);
+
+
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity(project, HttpStatus.OK);
+    }
 }
