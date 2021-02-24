@@ -25,7 +25,7 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/user")
-    public ResponseEntity getAllUser(){
+    public ResponseEntity getAllUser() {
         try {
             List<User> userList = userService.getAllUser();
 
@@ -35,12 +35,13 @@ public class UserController {
                 return new ResponseEntity(userList, HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()),HttpStatus.CONFLICT);
+            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
         }
     }
+
     @CrossOrigin
     @GetMapping("/user/{id}")
-    public ResponseEntity getAllUserByProjectId(@PathVariable("id") int id){
+    public ResponseEntity getAllUserByProjectId(@PathVariable("id") int id) {
         try {
             List<User> userList = userService.findUserByProjectId(id);
 
@@ -50,7 +51,7 @@ public class UserController {
                 return new ResponseEntity(userList, HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()),HttpStatus.CONFLICT);
+            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 }
