@@ -2,11 +2,13 @@ package com.capstone.crdm.services;
 
 import com.capstone.crdm.entities.Formula;
 import com.capstone.crdm.repositories.IFormulaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class FormulaService {
     private IFormulaRepository formulaRepository;
     public FormulaService(IFormulaRepository productRepository) {
@@ -31,5 +33,9 @@ public class FormulaService {
 
     public void delete(Integer id) {
         this.formulaRepository.deleteById(id);
+    }
+
+    public List<Formula> findByProjectId(int projectId) {
+        return new ArrayList<>((Collection<? extends Formula>) this.formulaRepository.findByProjectId(projectId));
     }
 }

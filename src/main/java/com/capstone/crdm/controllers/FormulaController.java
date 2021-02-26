@@ -2,6 +2,7 @@ package com.capstone.crdm.controllers;
 
 import com.capstone.crdm.entities.Formula;
 import com.capstone.crdm.services.FormulaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class FormulaController {
     private FormulaService formulaService;
 
+    @Autowired
     public FormulaController(FormulaService formulaService) {
         this.formulaService = formulaService;
     }
@@ -44,6 +46,18 @@ public class FormulaController {
     public ResponseEntity<List<Formula>> findAll() {
         var results = this.formulaService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
+
+    @CrossOrigin
+    @GetMapping(path = "/projectId/{id}")
+    public ResponseEntity<List<Formula>> findByProjectId(@PathVariable int id) {
+        var results = this.formulaService.findByProjectId(id);
+        if (results != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(results);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
     @DeleteMapping(path = "/{id}")
