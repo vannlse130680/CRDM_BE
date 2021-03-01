@@ -7,15 +7,14 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+      dialect: org.hibernate.dialect.SQLServerDialect
       ddl-auto: validate
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/crdm_database
-    username: postgres
-    password: admin
-    driver-class-name: org.postgresql.Driver
-    platform: postgres
+    url: jdbc:sqlserver://localhost;databaseName=crdm
+    username: sa
+    password: 12345678
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   flyway:
     enabled: false
@@ -33,3 +32,18 @@ crdm:
         alias: crdm
         password: 42zzVL4Qms3FG-2p+SXShP53tqdAQ-HX
 
+---
+spring:
+  profiles: postgres
+  jpa:
+    show-sql: false
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: validate
+
+    datasource:
+      url: jdbc:postgresql://localhost:5432/crdm_database
+      username: postgres
+      password: admin
+      driver-class-name: org.postgresql.Driver
+      platform: postgres
