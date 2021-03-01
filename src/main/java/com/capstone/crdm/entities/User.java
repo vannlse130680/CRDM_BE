@@ -50,4 +50,7 @@ public class User {
     @JoinColumn(name ="userId",insertable = false, updatable = false)
     private List<ProjectAssign> projectAssign;
 
+    @Transient
+    private String role;
+
 }

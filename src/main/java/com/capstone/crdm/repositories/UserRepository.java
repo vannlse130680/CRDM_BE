@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
@@ -13,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u WHERE (u.id IN (SELECT pa.userId FROM ProjectAssign pa WHERE pa.projectId = :projectId))")
     List<User> findUserAssignByProjectId(@Param("projectId") Integer projectId);
+
+    Optional<User> findByUsername(String username);
 }
