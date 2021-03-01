@@ -41,9 +41,9 @@ spring:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: validate
 
-    datasource:
-      url: jdbc:postgresql://localhost:5432/crdm_database
-      username: postgres
-      password: admin
-      driver-class-name: org.postgresql.Driver
-      platform: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crdm_database
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
