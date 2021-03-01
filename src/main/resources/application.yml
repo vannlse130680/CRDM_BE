@@ -8,7 +8,7 @@ spring:
     show-sql: false
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
-      ddl-auto: create
+      ddl-auto: validate
 
   datasource:
     url: jdbc:postgresql://localhost:5432/crdm_database
