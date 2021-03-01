@@ -1,6 +1,5 @@
 package com.capstone.crdm.controllers;
 
-import com.capstone.crdm.entities.Client;
 import com.capstone.crdm.entities.User;
 import com.capstone.crdm.services.IUserService;
 import com.capstone.crdm.utilities.CRDMMessage;
@@ -16,7 +15,8 @@ import java.util.List;
 
 @RestController
 public class UserController {
-    private IUserService userService;
+
+    private final IUserService userService;
 
     @Autowired
     public UserController(IUserService userService) {

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 public class ClientController {
-    private final IClientService IClientService;
 
+    private final IClientService IClientService;
 
     @Autowired
     public ClientController(IClientService IClientService) {

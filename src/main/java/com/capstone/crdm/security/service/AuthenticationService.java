@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.Instant;
 
 @Service
@@ -48,6 +49,10 @@ public class AuthenticationService {
 
     public AuthenticationService() {
         // prepare algorithm
+    }
+
+    @PostConstruct
+    public void initializeVerifier() {
         this.prepareVerifier();
     }
 
@@ -66,11 +71,11 @@ public class AuthenticationService {
         }
 
         if (authenticationRequest.getUsername() == null) {
-            throw new CrdmIllegalArgumentException("Authentication request must not be null");
+            throw new CrdmIllegalArgumentException("Username must not be null");
         }
 
         if (authenticationRequest.getPassword() == null) {
-            throw new CrdmIllegalArgumentException("Authentication request must not be null");
+            throw new CrdmIllegalArgumentException("Password must not be null");
         }
 
         var user = this.userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new CrdmUnauthorizedException("User does not exist"));
@@ -125,7 +130,7 @@ public class AuthenticationService {
     }
 
     private void prepareVerifier() {
-        this.jwtVerifier = JwtUtils.initializeVerifier(this.keystoreName, this.keyPassword, this.keyAlias);
+        this.jwtVerifier = JwtUtils.initializeVerifier(this.keystoreName, this.keyAlias, this.keyPassword);
     }
 
 }

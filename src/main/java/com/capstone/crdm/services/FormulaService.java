@@ -2,13 +2,17 @@ package com.capstone.crdm.services;
 
 import com.capstone.crdm.entities.Formula;
 import com.capstone.crdm.repositories.IFormulaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class FormulaService {
-    private IFormulaRepository formulaRepository;
+
+    private final IFormulaRepository formulaRepository;
+
     public FormulaService(IFormulaRepository productRepository) {
         this.formulaRepository = productRepository;
     }

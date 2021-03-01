@@ -2,13 +2,17 @@ package com.capstone.crdm.services;
 
 import com.capstone.crdm.entities.Material;
 import com.capstone.crdm.repositories.IMaterialRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class MaterialService {
-   private IMaterialRepository materialRepository;
+
+   private final IMaterialRepository materialRepository;
+
     public MaterialService(IMaterialRepository productRepository) {
         this.materialRepository = productRepository;
     }

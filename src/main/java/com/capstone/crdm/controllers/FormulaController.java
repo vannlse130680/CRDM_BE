@@ -11,7 +11,8 @@ import java.util.List;
 @RequestMapping(path = "/formula")
 @RestController
 public class FormulaController {
-    private FormulaService formulaService;
+
+    private final FormulaService formulaService;
 
     public FormulaController(FormulaService formulaService) {
         this.formulaService = formulaService;

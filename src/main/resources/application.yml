@@ -1,0 +1,35 @@
+#spring.jpa.properties.hibernate.id.new_generator_mappings=false
+#spring.jpa.hibernate.connection.CharSet=utf8
+#spring.jpa.hibernate.connection.characterEncoding=utf8
+#spring.jpa.hibernate.connection.useUnicode=true
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crdm_database
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+
+  flyway:
+    enabled: false
+    mixed: true
+    baselineOnMigrate: true
+
+crdm:
+  security:
+    cors:
+      allowed-headers: '*'
+      allowed-origins: '*'
+    encryption:
+      keystore:
+        keystore-name: crdm-keystore
+        alias: crdm
+        password: 42zzVL4Qms3FG-2p+SXShP53tqdAQ-HX
+
