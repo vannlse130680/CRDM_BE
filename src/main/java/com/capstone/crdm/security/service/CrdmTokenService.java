@@ -26,9 +26,10 @@ public class CrdmTokenService {
         this.jwtUtils.createAccessToken(response, userEntity);
         this.jwtUtils.createRefreshToken(response, userEntity);
 
-        if (userEntity.getRole().equals(CrdmRole.MANAGER.name())) {
+        // 1 - MANAGER, 2 - STAFF
+        if (userEntity.getRoleId() == 1) {
             response.setScope(Arrays.asList("manage-clients", "manage-formulas", "manage-materials", "manage-projects", "manage-users"));
-        } else if (userEntity.getRole().equals(CrdmRole.STAFF.name())) {
+        } else if (userEntity.getRoleId() == 2) {
             response.setScope(Arrays.asList("manage-clients", "manage-formulas", "manage-materials", "manage-projects"));
         }
 
@@ -47,9 +48,10 @@ public class CrdmTokenService {
         response.setRefreshToken(refreshToken);
         response.setRefreshTokenExpiredAt(exp);
 
-        if (userEntity.getRole().equals(CrdmRole.MANAGER.name())) {
+        // 1 - MANAGER, 2 - STAFF
+        if (userEntity.getRoleId() == 1) {
             response.setScope(Arrays.asList("manage-clients", "manage-formulas", "manage-materials", "manage-projects", "manage-users"));
-        } else if (userEntity.getRole().equals(CrdmRole.STAFF.name())) {
+        } else if (userEntity.getRoleId() == 2) {
             response.setScope(Arrays.asList("manage-clients", "manage-formulas", "manage-materials", "manage-projects"));
         }
 

@@ -61,10 +61,10 @@ public class JwtUtils {
         var expiresAt = Instant.now().plus(this.accessTokenLifetime, ChronoUnit.HOURS);
 
         var accessToken = JWT.create()
-                .withIssuer("Crdm")
+                .withIssuer("crdm")
                 .withIssuedAt(Date.from(Instant.now()))
                 .withExpiresAt(Date.from(expiresAt))
-                .withAudience("Crdm-services")
+                .withAudience("crdm-services")
                 .withSubject(String.valueOf(user.getId()))
                 .withClaim("typ", "Bearer")
                 .withClaim("role", this.prepareRole(user))
@@ -91,10 +91,10 @@ public class JwtUtils {
         var expiresAt = Instant.now().plus(this.refreshTokenLifetime, ChronoUnit.HOURS);
 
         var refreshToken = JWT.create()
-                .withIssuer("Crdm")
+                .withIssuer("crdm")
                 .withIssuedAt(Date.from(Instant.now()))
                 .withExpiresAt(Date.from(expiresAt))
-                .withAudience("Crdm-services")
+                .withAudience("crdm-services")
                 .withClaim("typ", "Refresh")
                 .withSubject(String.valueOf(user.getId()))
                 .sign(this.algorithm);
@@ -104,7 +104,7 @@ public class JwtUtils {
     }
 
     private String prepareRole(User user) {
-        if (user.getRole().equals(CrdmRole.MANAGER.name())) {
+        if (user.getRoleId() == 1) {
             return CrdmRole.MANAGER.name();
         }
 
