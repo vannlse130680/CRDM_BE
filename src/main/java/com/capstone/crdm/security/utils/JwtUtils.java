@@ -26,19 +26,19 @@ import java.util.Date;
 @Service
 public class JwtUtils {
 
-    @Value("${Crdm.encryption.keystore.alias}")
+    @Value("${crdm.encryption.keystore.alias}")
     private String keyAlias;
 
-    @Value("${Crdm.encryption.keystore.password}")
+    @Value("${crdm.encryption.keystore.password}")
     private String keyPassword;
 
-    @Value("${Crdm.encryption.keystore.keystore-name}")
+    @Value("${crdm.encryption.keystore.keystore-name}")
     private String keystoreName;
 
-    @Value("${Crdm.authentication.access-token.lifetime:2}")
+    @Value("${crdm.authentication.access-token.lifetime:2}")
     private Integer accessTokenLifetime;
 
-    @Value("${Crdm.authentication.refresh-token.lifetime:720}")
+    @Value("${crdm.authentication.refresh-token.lifetime:720}")
     private Integer refreshTokenLifetime;
 
     private Algorithm algorithm;
