@@ -11,19 +11,15 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "client")
+@Table(name = "clients")
 public class Client {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
 
     @Basic
     @Column(name = "name")
     private String name;
-
-
-
 
 }

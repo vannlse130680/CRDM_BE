@@ -10,26 +10,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "material")
 public class Material {
+
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
-    @Basic
-    @Column(name = "name")
     private String name;
 
-    @Basic
-    @Column(name = "supplier")
-    private String supplier;
+    private int supplier_id;
 
-    @Basic
-    @Column(name = "DDP")
-    private String ddb;
+    private Double ddp;
 
-    @Basic
-    @Column(name = "Currently")
-    private String currently;
+    private String currency;
 
 }

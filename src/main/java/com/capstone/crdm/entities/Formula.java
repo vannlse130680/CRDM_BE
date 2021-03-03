@@ -4,42 +4,36 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "formulas")
 public class Formula {
+
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private Instant createdAt;
 
-    @Basic
-    @Column(name = "code")
-    private String name;
+    private int createdBy;
 
+    private Instant updatedAt;
 
-    @Basic
-    @Column(name = "lastEditDate")
-    private String lastEditDate;
+    private int updatedBy;
 
+    private int upgradedFrom;
 
-    @Basic
-    @Column(name = "projectId")
-    private String projectId;
+    private String outsourceTestFileLink;
 
+    private int projectId;
 
-    @Basic
-    @Column(name = "status")
+    private int versionId;
+
+    private String changeNote;
+
     private String status;
-
-    @Basic
-    @Column(name = "createBy")
-    private String createBy;
-
-    @Basic
-    @Column(name = "versionId")
-    private String versionId;
 
 }

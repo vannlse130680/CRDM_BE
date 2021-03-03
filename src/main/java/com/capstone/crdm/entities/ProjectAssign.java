@@ -8,19 +8,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "ProjectAssign")
+@Table(name = "project_assignments")
 public class ProjectAssign {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-     @Basic
-    @Column(name = "ProjectId")
     private int projectId;
 
-    @Basic
-    @Column(name = "UserId")
     private int userId;
+
 }

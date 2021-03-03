@@ -7,49 +7,39 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "project")
+@Table(name = "projects")
 public class Project {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
 
-    @Basic
-    @Column(name = "product")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private String product;
 
-    @Basic
-    @Column(name = "requirement")
     private String requirement;
+    
+    private Instant createdAt;
 
-    @Basic
-    @Column(name = "CreatedDate")
-    private Timestamp createdDate;
+    private Integer createdBy;
+    
+    private Instant deadline;
 
-    @Basic
-    @Column(name = "Deadline")
-    private Timestamp deadline;
-    @Basic
-    @Column(name = "Status")
-    private int status;
-
-    @Basic
-    @Column(name = "clientId")
+    private String status;
 
     private int clientId;
-
-    @ManyToOne
-    @JoinColumn(name ="clientId",insertable = false, updatable = false)
-
-    private Client client;
-
-    @OneToMany
-    @JoinColumn(name ="projectId",insertable = false, updatable = false)
-    private List<ProjectAssign> projectAssign;
+//
+//    @ManyToOne
+//    @JoinColumn(name ="clientId",insertable = false, updatable = false)
+//    private Client client;
+//
+//    @OneToMany
+//    @JoinColumn(name ="projectId",insertable = false, updatable = false)
+//    private List<ProjectAssign> projectAssign;
 
 }

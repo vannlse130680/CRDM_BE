@@ -5,52 +5,38 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "`User`") // phai co `` moi ko loi
+@Table(name = "users") // phai co `` moi ko loi
 public class User {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Basic
-    @Column(name = "username")
     private String username;
 
-    @Basic
-    @Column(name = "password")
     private String password;
 
-    @Basic
-    @Column(name = "name")
     private String name;
 
-    @Basic
-    @Column(name = "phone")
     private String phone;
 
-    @Basic
-    @Column(name = "DateOfBirth")
-    private Timestamp dateOfBirth;
+    private Instant dateOfBirth;
 
-    @Basic
-    @Column(name = "status")
-    private int status;
+    private String status;
 
-    @Basic
-    @Column(name = "roleId")
-    private int roleId;
+    private String role;
 
-    @OneToMany
-    @JoinColumn(name ="userId",insertable = false, updatable = false)
-    private List<ProjectAssign> projectAssign;
+//    @OneToMany
+//    @JoinColumn(name ="userId",insertable = false, updatable = false)
+//    private List<ProjectAssign> projectAssign;
 
     @Transient
-    private String role;
+    private int roleId;
 
 }
