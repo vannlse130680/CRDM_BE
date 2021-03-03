@@ -34,38 +34,6 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         this.projectAssignService = projectAssignService;
     }
 
-    @GetMapping("/{id}")
-    //Get project by projectID
-    public ResponseEntity getProjectById(@PathVariable("id") int id) {
-        try {
-            ProjectEntity project = projectService.findById(id);
-
-            if (project == null) {
-                return new ResponseEntity("no client found", HttpStatus.OK);
-            } else {
-                return new ResponseEntity(project, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
-        }
-    }
-
-    @GetMapping
-    //get All project
-    public ResponseEntity getAllClient() {
-        try {
-            List<ProjectEntity> projectList = projectService.findAll();
-
-            if (projectList == null) {
-                return new ResponseEntity("no client found", HttpStatus.OK);
-            } else {
-                return new ResponseEntity(projectList, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
-    }
-
     @GetMapping("/projectAssign/{id}")
     @Transactional
     // test cho update proejct with assign
@@ -85,9 +53,9 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         }
     }
 
-    @PostMapping
+    @PostMapping("/create-project")
     //Create new project
-    public ResponseEntity createProject(@RequestBody CreateProjectRequest request) {
+    public ResponseEntity create(@RequestBody CreateProjectRequest request) {
         ProjectEntity project = new ProjectEntity();
         try {
             var proj = request.getProject();
@@ -117,7 +85,7 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         return new ResponseEntity(project, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update-project")
     public ResponseEntity updateProject(@RequestBody CreateProjectRequest request) {
         ProjectEntity project = projectService.findById(request.getProject().getId());
         try {
