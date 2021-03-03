@@ -7,7 +7,7 @@ import com.capstone.crdm.services.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/user")
 @RestController
 public class UserController extends CrdmController<UserEntity, Integer, UserRepository> {
 

@@ -1,6 +1,5 @@
 package com.capstone.crdm.controllers;
 
-import com.capstone.crdm.entities.ClientEntity;
 import com.capstone.crdm.entities.ProjectAssign;
 import com.capstone.crdm.entities.ProjectEntity;
 import com.capstone.crdm.entities.UserEntity;
@@ -16,10 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping(path = "/project")
 @RestController
 public class ProjectController extends CrdmController<ProjectEntity, Integer, ProjectRepository> {
 
@@ -35,8 +34,7 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         this.projectAssignService = projectAssignService;
     }
 
-    @CrossOrigin
-    @GetMapping("/project/{id}")
+    @GetMapping("/{id}")
     //Get project by projectID
     public ResponseEntity getProjectById(@PathVariable("id") int id) {
         try {
@@ -52,8 +50,7 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         }
     }
 
-    @CrossOrigin
-    @GetMapping("/project")
+    @GetMapping
     //get All project
     public ResponseEntity getAllClient() {
         try {
@@ -69,7 +66,6 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         }
     }
 
-    @CrossOrigin
     @GetMapping("/projectAssign/{id}")
     @Transactional
     // test cho update proejct with assign
@@ -89,9 +85,7 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         }
     }
 
-    @CrossOrigin
-    @PostMapping("/project")
-    @Transactional
+    @PostMapping
     //Create new project
     public ResponseEntity createProject(@RequestBody CreateProjectRequest request) {
         ProjectEntity project = new ProjectEntity();
@@ -123,9 +117,7 @@ public class ProjectController extends CrdmController<ProjectEntity, Integer, Pr
         return new ResponseEntity(project, HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @PutMapping("/project")
-    @Transactional
+    @PutMapping
     public ResponseEntity updateProject(@RequestBody CreateProjectRequest request) {
         ProjectEntity project = projectService.findById(request.getProject().getId());
         try {
