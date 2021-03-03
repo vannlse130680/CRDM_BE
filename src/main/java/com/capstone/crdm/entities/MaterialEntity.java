@@ -9,11 +9,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "material")
-public class Material {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class MaterialEntity extends CrdmEntity<Integer> {
 
     private String name;
 

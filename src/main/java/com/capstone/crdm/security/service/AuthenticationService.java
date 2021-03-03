@@ -3,14 +3,13 @@ package com.capstone.crdm.security.service;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.capstone.crdm.entities.User;
+import com.capstone.crdm.entities.UserEntity;
 import com.capstone.crdm.exception.CrdmIllegalArgumentException;
 import com.capstone.crdm.exception.CrdmIllegalStateException;
 import com.capstone.crdm.exception.CrdmUnauthorizedException;
 import com.capstone.crdm.repositories.UserRepository;
 import com.capstone.crdm.request.AuthenticationRequest;
 import com.capstone.crdm.security.authentication.AuthenticationResponse;
-import com.capstone.crdm.security.service.CrdmTokenService;
 import com.capstone.crdm.security.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,11 +108,11 @@ public class AuthenticationService {
             throw new CrdmUnauthorizedException("Invalid refresh token. Detailed: This token is not a 'refresh' token");
         }
 
-        User user = this.userRepository.findById(Integer.parseInt(jwt.getSubject())).orElseThrow(() -> new CrdmIllegalStateException("Requested user does not exist in database anymore."));
+        UserEntity user = this.userRepository.findById(Integer.parseInt(jwt.getSubject())).orElseThrow(() -> new CrdmIllegalStateException("Requested user does not exist in database anymore."));
         return this.refreshAuthentication(user, refreshToken, jwt.getExpiresAt().toInstant());
     }
 
-    protected AuthenticationResponse createAuthenticationResponse(User user) {
+    protected AuthenticationResponse createAuthenticationResponse(UserEntity user) {
         if (user.getStatus().equals("ACTIVE")) {
             throw new CrdmUnauthorizedException("This account has been suspended. Please contact service manager.");
         }
@@ -121,7 +120,7 @@ public class AuthenticationService {
         return this.tokenService.createAuthenticationResponse(user);
     }
 
-    protected AuthenticationResponse refreshAuthentication(User user, String refreshToken, Instant expiresAt) {
+    protected AuthenticationResponse refreshAuthentication(UserEntity user, String refreshToken, Instant expiresAt) {
         if (user.getStatus().equals("ACTIVE")) {
             throw new CrdmUnauthorizedException("This account has been suspended. Please contact service administrator.");
         }

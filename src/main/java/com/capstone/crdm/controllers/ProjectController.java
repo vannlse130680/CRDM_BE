@@ -1,36 +1,35 @@
 package com.capstone.crdm.controllers;
 
-import com.capstone.crdm.entities.Client;
-import com.capstone.crdm.entities.Project;
+import com.capstone.crdm.entities.ClientEntity;
 import com.capstone.crdm.entities.ProjectAssign;
-import com.capstone.crdm.entities.User;
-import com.capstone.crdm.request.CreateProjectReq;
-import com.capstone.crdm.services.IClientService;
-import com.capstone.crdm.services.IProjectAssignService;
-import com.capstone.crdm.services.IProjectService;
+import com.capstone.crdm.entities.ProjectEntity;
+import com.capstone.crdm.entities.UserEntity;
+import com.capstone.crdm.repositories.ProjectRepository;
+import com.capstone.crdm.request.CreateProjectRequest;
+import com.capstone.crdm.services.ClientService;
+import com.capstone.crdm.services.CrdmService;
+import com.capstone.crdm.services.ProjectAssignService;
+import com.capstone.crdm.services.ProjectService;
 import com.capstone.crdm.utilities.CRDMMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-public class ProjectController {
-    IProjectService projectService;
-    IClientService clientService;
-    IProjectAssignService projectAssignService;
+public class ProjectController extends CrdmController<ProjectEntity, Integer, ProjectRepository> {
 
-    @Autowired
-    public ProjectController(IProjectService projectService, IClientService clientService, IProjectAssignService projectAssignService) {
+    private final ProjectService projectService;
+
+    private final ClientService clientService;
+
+    private final ProjectAssignService projectAssignService;
+
+    public ProjectController(ProjectService projectService, ClientService clientService, ProjectAssignService projectAssignService) {
         this.projectService = projectService;
         this.clientService = clientService;
         this.projectAssignService = projectAssignService;
@@ -41,7 +40,7 @@ public class ProjectController {
     //Get project by projectID
     public ResponseEntity getProjectById(@PathVariable("id") int id) {
         try {
-            Project project = projectService.findProjectbyId(id);
+            ProjectEntity project = projectService.findById(id);
 
             if (project == null) {
                 return new ResponseEntity("no client found", HttpStatus.OK);
@@ -58,7 +57,7 @@ public class ProjectController {
     //get All project
     public ResponseEntity getAllClient() {
         try {
-            List<Project> projectList = projectService.getAllProject();
+            List<ProjectEntity> projectList = projectService.findAll();
 
             if (projectList == null) {
                 return new ResponseEntity("no client found", HttpStatus.OK);
@@ -94,32 +93,19 @@ public class ProjectController {
     @PostMapping("/project")
     @Transactional
     //Create new project
-    public ResponseEntity createProject(@RequestBody CreateProjectReq request) {
-        Project project = new Project();
+    public ResponseEntity createProject(@RequestBody CreateProjectRequest request) {
+        ProjectEntity project = new ProjectEntity();
         try {
-
-
-            project.setProduct(request.getProject().getProduct());
-            project.setDeadline(request.getProject().getDeadline());
-            project.setStatus("ACTIVE");
-            project.setRequirement(request.getProject().getRequirement());
-
-            project.setCreatedAt(Instant.now());
-            project.setClientId(request.getProject().getClientId());
-
-
-            Client client = clientService.getClientById(request.getProject().getClientId());
-
-//            project.setClient(client);
+            var proj = request.getProject();
 
             //create first
-            project = projectService.createProject(project);
+            project = projectService.create(proj);
 
             //assign users
-            List<User> userList = request.getUsers();
+            List<UserEntity> userList = request.getUsers();
 
             List<ProjectAssign> projectAssignList = new ArrayList<>();
-            for (User u : userList
+            for (UserEntity u : userList
             ) {
                 ProjectAssign pa = new ProjectAssign();
                 pa.setProjectId(project.getId());
@@ -140,8 +126,8 @@ public class ProjectController {
     @CrossOrigin
     @PutMapping("/project")
     @Transactional
-    public ResponseEntity updateProject(@RequestBody CreateProjectReq request) {
-        Project project = projectService.findProjectbyId(request.getProject().getId());
+    public ResponseEntity updateProject(@RequestBody CreateProjectRequest request) {
+        ProjectEntity project = projectService.findById(request.getProject().getId());
         try {
 
 
@@ -157,17 +143,17 @@ public class ProjectController {
 //            Client client = clientService.getClientById(request.getProject().getClientId());
 //
 //            project.setClient(client);
-            project = projectService.createProject(project);
+            project = projectService.create(project);
 
             //remove old
             List<ProjectAssign> projectAssignListOld = projectAssignService.findProjectAssignByProId(request.getProject().getId());
             projectAssignService.deleteAllProjectAssignByProjectId(projectAssignListOld);
 
             //add new
-            List<User> userList = request.getUsers();
+            List<UserEntity> userList = request.getUsers();
 
             List<ProjectAssign> projectAssignListNew = new ArrayList<>();
-            for (User u : userList
+            for (UserEntity u : userList
             ) {
                 ProjectAssign pa = new ProjectAssign();
                 pa.setProjectId(project.getId());
@@ -182,5 +168,10 @@ public class ProjectController {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
         return new ResponseEntity(project, HttpStatus.OK);
+    }
+
+    @Override
+    protected CrdmService<ProjectEntity, Integer, ProjectRepository> getService() {
+        return this.projectService;
     }
 }

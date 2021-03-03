@@ -11,12 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users") // phai co `` moi ko loi
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@Table(name = "users")
+public class UserEntity extends CrdmEntity<Integer> {
 
     private String username;
 
@@ -27,8 +23,6 @@ public class User {
     private String phone;
 
     private Instant dateOfBirth;
-
-    private String status;
 
     private String role;
 

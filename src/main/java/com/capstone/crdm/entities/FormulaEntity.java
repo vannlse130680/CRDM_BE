@@ -10,11 +10,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "formulas")
-public class Formula {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class FormulaEntity extends CrdmEntity<Integer> {
 
     private Instant createdAt;
 
@@ -33,7 +29,5 @@ public class Formula {
     private int versionId;
 
     private String changeNote;
-
-    private String status;
 
 }
