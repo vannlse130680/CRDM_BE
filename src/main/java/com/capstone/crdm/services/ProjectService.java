@@ -1,24 +1,25 @@
 package com.capstone.crdm.services;
 
 import com.capstone.crdm.constants.OperationMode;
+import com.capstone.crdm.entities.ProjectAssign;
 import com.capstone.crdm.entities.ProjectEntity;
-import com.capstone.crdm.repositories.ProjectAssignRepository;
 import com.capstone.crdm.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class ProjectService extends CrdmService<ProjectEntity, Integer, ProjectRepository> {
 
     private final ProjectRepository projectRepository;
 
-    private final ProjectAssignRepository projectAssignRepository;
+    private final ProjectAssignService projectAssignService;
 
-    public ProjectService(ProjectRepository projectRepository, ProjectAssignRepository projectAssignRepository) {
+    public ProjectService(ProjectRepository projectRepository, ProjectAssignService projectAssignService) {
         super(ProjectEntity.class);
         this.projectRepository = projectRepository;
-        this.projectAssignRepository = projectAssignRepository;
+        this.projectAssignService = projectAssignService;
     }
 
     @Override
@@ -43,4 +44,18 @@ public class ProjectService extends CrdmService<ProjectEntity, Integer, ProjectR
 //        projectRepository.
 //        return null;
 //    }
+
+    public void doProjectAssign(List<ProjectAssign> projectAssignList) {
+        this.projectAssignService.doProjectAssign(projectAssignList);
+    }
+
+    public List<ProjectAssign> findProjectAssignments(int projectId) {
+        return this.projectAssignService.findProjectAssignments(projectId);
+    }
+
+    public void removeProjectAssignments(Integer id, List<Integer> assignmentIds) {
+        this.findById(id);
+        this.projectAssignService.deleteByIds(assignmentIds);
+    }
+
 }
