@@ -28,7 +28,12 @@ public class ProjectAssignService {
     }
 
     public void deleteByIds(List<Integer> ids) {
-        projectAssignRepository.deleteByIds(ids);
+        var assignments = this.projectAssignRepository.findAllById(ids);
+        if (assignments.isEmpty()) {
+            return;
+        }
+
+        projectAssignRepository.deleteAll(assignments);
     }
 
 }

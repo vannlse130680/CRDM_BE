@@ -12,6 +12,4 @@ public interface ProjectAssignRepository extends JpaRepository<ProjectAssign, In
 
     List<ProjectAssign> findByProjectId(int projectId);
 
-    void deleteByIds(List<Integer> ids);
-
 }
