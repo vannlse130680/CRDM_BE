@@ -1,7 +1,6 @@
 package com.capstone.crdm.security.authentication;
 
 
-import com.capstone.crdm.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;

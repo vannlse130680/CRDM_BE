@@ -1,7 +1,8 @@
 package com.capstone.crdm.services;
 
-import com.capstone.crdm.entities.Material;
-import com.capstone.crdm.repositories.IMaterialRepository;
+import com.capstone.crdm.entities.MaterialEntity;
+import com.capstone.crdm.entities.UserEntity;
+import com.capstone.crdm.repositories.MaterialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,31 +10,18 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public class MaterialService {
+public class MaterialService extends CrdmService<MaterialEntity, Integer, MaterialRepository> {
 
-   private final IMaterialRepository materialRepository;
+   private final MaterialRepository materialRepository;
 
-    public MaterialService(IMaterialRepository productRepository) {
+    public MaterialService(MaterialRepository productRepository) {
+        super(MaterialEntity.class);
         this.materialRepository = productRepository;
     }
 
-    public Material create(Material product) {
-        return this.materialRepository.save(product);
+    @Override
+    protected MaterialRepository getRepository() {
+        return this.materialRepository;
     }
 
-    public Material update(Material product) {
-        return this.materialRepository.save(product);
-    }
-
-    public Material findById(Integer id) {
-        return this.materialRepository.findById(id).orElse(null);
-    }
-
-    public List<Material> findAll() {
-        return new ArrayList<>((Collection<? extends Material>) this.materialRepository.findAll());
-    }
-
-    public void delete(Integer id) {
-        this.materialRepository.deleteById(id);
-    }
 }

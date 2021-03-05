@@ -1,57 +1,25 @@
 package com.capstone.crdm.controllers;
 
-import com.capstone.crdm.entities.User;
-import com.capstone.crdm.services.IUserService;
-import com.capstone.crdm.utilities.CRDMMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.capstone.crdm.entities.UserEntity;
+import com.capstone.crdm.repositories.UserRepository;
+import com.capstone.crdm.services.CrdmService;
+import com.capstone.crdm.services.UserService;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
+@RequestMapping(path = "/user")
 @RestController
-public class UserController {
+public class UserController extends CrdmController<UserEntity, Integer, UserRepository> {
 
-    private final IUserService userService;
+    private final UserService userService;
 
-    @Autowired
-    public UserController(IUserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @CrossOrigin
-    @GetMapping("/user")
-    public ResponseEntity getAllUser() {
-        try {
-            List<User> userList = userService.getAllUser();
-
-            if (userList == null) {
-                return new ResponseEntity("no client found", HttpStatus.OK);
-            } else {
-                return new ResponseEntity(userList, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
-        }
+    @Override
+    protected CrdmService<UserEntity, Integer, UserRepository> getService() {
+        return this.userService;
     }
 
-    @CrossOrigin
-    @GetMapping("/user/{id}")
-    public ResponseEntity getAllUserByProjectId(@PathVariable("id") int id) {
-        try {
-            List<User> userList = userService.findUserByProjectId(id);
-
-            if (userList == null) {
-                return new ResponseEntity("no client found", HttpStatus.OK);
-            } else {
-                return new ResponseEntity(userList, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity(new CRDMMessage(e.getMessage()), HttpStatus.CONFLICT);
-        }
-    }
 }

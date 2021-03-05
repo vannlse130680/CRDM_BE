@@ -1,8 +1,7 @@
 package com.capstone.crdm.security.service;
 
-import com.capstone.crdm.entities.User;
+import com.capstone.crdm.entities.UserEntity;
 import com.capstone.crdm.security.authentication.AuthenticationResponse;
-import com.capstone.crdm.security.authentication.CrdmRole;
 import com.capstone.crdm.security.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class CrdmTokenService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    public AuthenticationResponse createAuthenticationResponse(User userEntity) {
+    public AuthenticationResponse createAuthenticationResponse(UserEntity userEntity) {
         AuthenticationResponse response = new AuthenticationResponse();
 
         response.setTokenType(BEARER_TYPE);
@@ -36,7 +35,7 @@ public class CrdmTokenService {
         return  response;
     }
 
-    public AuthenticationResponse refreshAuthenticationResponse(User userEntity, String refreshToken, Instant expiresAt) {
+    public AuthenticationResponse refreshAuthenticationResponse(UserEntity userEntity, String refreshToken, Instant expiresAt) {
         AuthenticationResponse response = new AuthenticationResponse();
 
         response.setTokenType(BEARER_TYPE);

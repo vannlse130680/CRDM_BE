@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.capstone.crdm.entities.User;
+import com.capstone.crdm.entities.UserEntity;
 import com.capstone.crdm.exception.CrdmIllegalArgumentException;
 import com.capstone.crdm.exception.CrdmIllegalStateException;
 import com.capstone.crdm.security.authentication.AuthenticationResponse;
@@ -45,7 +45,7 @@ public class JwtUtils {
 
     private JWTVerifier jwtVerifier;
 
-    public void createAccessToken(AuthenticationResponse response, User user) {
+    public void createAccessToken(AuthenticationResponse response, UserEntity user) {
         if (response == null) {
             throw new CrdmIllegalArgumentException("Response instance must not be null");
         }
@@ -75,7 +75,7 @@ public class JwtUtils {
         response.setExpiredAt(expiresAt);
     }
 
-    public void createRefreshToken(AuthenticationResponse response, User user) {
+    public void createRefreshToken(AuthenticationResponse response, UserEntity user) {
         if (response == null) {
             throw new CrdmIllegalArgumentException("Response instance must not be null");
         }
@@ -103,7 +103,7 @@ public class JwtUtils {
         response.setRefreshTokenExpiredAt(expiresAt);
     }
 
-    private String prepareRole(User user) {
+    private String prepareRole(UserEntity user) {
         if (user.getRoleId() == 1) {
             return CrdmRole.MANAGER.name();
         }
@@ -111,7 +111,7 @@ public class JwtUtils {
         return CrdmRole.STAFF.name();
     }
 
-    private String[] prepareAuthorities(User user) {
+    private String[] prepareAuthorities(UserEntity user) {
         return new String[]{ };
     }
 
