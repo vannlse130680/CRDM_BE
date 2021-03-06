@@ -21,7 +21,7 @@ public class PhaseEntity extends CrdmChildEntity<Integer> {
     private int orderNumber;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "phase", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "phase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhaseDetailEntity> details;
 
     @JsonBackReference

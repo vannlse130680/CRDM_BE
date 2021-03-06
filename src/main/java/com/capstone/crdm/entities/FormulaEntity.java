@@ -33,6 +33,10 @@ public class FormulaEntity extends CrdmEntity<Integer> {
     private String changeNote;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "formula", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PhaseEntity> details;
+    @OneToMany(mappedBy = "formula", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PhaseEntity> phases;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "formula", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FormulaDetail> details;
 }

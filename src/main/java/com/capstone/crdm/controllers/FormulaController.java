@@ -51,4 +51,10 @@ public class FormulaController extends CrdmController<FormulaEntity, Integer, Fo
         return ResponseEntity.ok(id);
     }
 
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<?> deployToProduction(@PathVariable Integer id, @RequestBody String status) {
+
+        return ResponseEntity.ok(id);
+    }
+
 }
