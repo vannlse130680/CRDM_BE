@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -15,8 +16,10 @@ import javax.persistence.Table;
 @Table(name = "formula_details")
 public class FormulaDetail extends CrdmChildEntity<Integer> {
 
+    @NotNull
     private int materialId;
 
+    @NotNull
     private Double percentage;
 
     @JsonBackReference

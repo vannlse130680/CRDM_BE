@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -18,8 +19,10 @@ public class PhaseEntity extends CrdmChildEntity<Integer> {
 
     private String description;
 
+    @NotNull
     private int orderNumber;
 
+    @NotNull
     @JsonManagedReference
     @OneToMany(mappedBy = "phase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhaseDetailEntity> details;
