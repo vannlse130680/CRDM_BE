@@ -41,7 +41,7 @@ public class CrdmAuthentication implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return this.getCredentials();
+        return this.credentials;
     }
 
     @Override
