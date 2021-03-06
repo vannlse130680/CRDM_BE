@@ -1,10 +1,12 @@
 package com.capstone.crdm.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +32,7 @@ public class FormulaEntity extends CrdmEntity<Integer> {
 
     private String changeNote;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "formula", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PhaseEntity> details;
 }
