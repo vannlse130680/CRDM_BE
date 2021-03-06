@@ -5,10 +5,7 @@ import com.capstone.crdm.entities.FormulaEntity;
 import com.capstone.crdm.entities.PhaseEntity;
 import com.capstone.crdm.exception.CrdmIllegalArgumentException;
 import com.capstone.crdm.repositories.FormulaRepository;
-import com.capstone.crdm.repositories.MaterialRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class FormulaService extends CrdmService<FormulaEntity, Integer, FormulaRepository> {
