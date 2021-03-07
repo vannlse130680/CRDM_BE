@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "phase_details")
-public class PhaseDetailEntity extends CrdmChildEntity<Integer> {
+public class PhaseDetailEntity extends CrdmChildEntity<Integer> implements Cloneable {
 
     @NotNull
     private int materialId;
@@ -26,4 +26,12 @@ public class PhaseDetailEntity extends CrdmChildEntity<Integer> {
     @ManyToOne(fetch = FetchType.LAZY)
     private PhaseEntity phase;
 
+    @Override
+    public PhaseDetailEntity clone() throws CloneNotSupportedException {
+        var clonedPhaseDetail = (PhaseDetailEntity) super.clone();
+        clonedPhaseDetail.materialId = this.materialId;
+        clonedPhaseDetail.percentage = this.percentage;
+
+        return clonedPhaseDetail;
+    }
 }

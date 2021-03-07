@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "formula_details")
-public class FormulaDetail extends CrdmChildEntity<Integer> {
+public class FormulaDetail extends CrdmChildEntity<Integer> implements Cloneable {
 
     @NotNull
     private int materialId;
@@ -25,5 +25,15 @@ public class FormulaDetail extends CrdmChildEntity<Integer> {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     private FormulaEntity formula;
+
+    @Override
+    protected FormulaDetail clone() throws CloneNotSupportedException {
+        var clonedFormulaDetail = (FormulaDetail) super.clone();
+        clonedFormulaDetail.id = this.id;
+        clonedFormulaDetail.materialId = this.materialId;
+        clonedFormulaDetail.percentage = this.percentage;
+
+        return clonedFormulaDetail;
+    }
 
 }

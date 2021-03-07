@@ -2,13 +2,12 @@ package com.capstone.crdm.services;
 
 import com.capstone.crdm.constants.OperationMode;
 import com.capstone.crdm.entities.UserEntity;
-import com.capstone.crdm.exception.CrdmIllegalStateException;
 import com.capstone.crdm.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Slf4j
 @Service
 public class UserService extends CrdmService<UserEntity, Integer, UserRepository> {
 
@@ -33,4 +32,5 @@ public class UserService extends CrdmService<UserEntity, Integer, UserRepository
         var encodedPassword = this.passwordEncoder.encode(entity.getPassword());
         entity.setPassword(encodedPassword);
     }
+
 }

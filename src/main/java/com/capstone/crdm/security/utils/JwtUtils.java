@@ -104,7 +104,7 @@ public class JwtUtils {
     }
 
     private String prepareRole(UserEntity user) {
-        if (user.getRoleId() == 1) {
+        if (user.getRole().equals(CrdmRole.MANAGER.name())) {
             return CrdmRole.MANAGER.name();
         }
 

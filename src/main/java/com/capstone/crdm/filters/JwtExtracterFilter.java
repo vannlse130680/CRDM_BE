@@ -1,25 +1,18 @@
 package com.capstone.crdm.filters;
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-import com.capstone.crdm.exception.CrdmIllegalStateException;
 import com.capstone.crdm.security.authentication.CrdmAuthentication;
 import com.capstone.crdm.security.authentication.CrdmRole;
 import com.capstone.crdm.security.authentication.CrdmUserDetails;
 import com.capstone.crdm.security.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

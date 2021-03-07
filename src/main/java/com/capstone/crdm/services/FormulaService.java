@@ -1,11 +1,16 @@
 package com.capstone.crdm.services;
 
+import com.capstone.crdm.constants.EntityStatus;
 import com.capstone.crdm.constants.OperationMode;
 import com.capstone.crdm.entities.FormulaEntity;
 import com.capstone.crdm.entities.PhaseEntity;
 import com.capstone.crdm.exception.CrdmIllegalArgumentException;
 import com.capstone.crdm.repositories.FormulaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class FormulaService extends CrdmService<FormulaEntity, Integer, FormulaRepository> {
@@ -62,4 +67,28 @@ public class FormulaService extends CrdmService<FormulaEntity, Integer, FormulaR
         formula.setStatus(status);
         this.formulaRepository.save(formula);
     }
+
+    public void upgrade(FormulaEntity formula) {
+        // remove ID for children
+        formula.getPhases().forEach(phase -> {
+            phase.setId(null);
+            phase.getDetails().forEach(detail -> {
+                detail.setId(null);
+            });
+        });
+
+        formula.getDetails().forEach(detail -> detail.setId(null));
+
+        // set upgrade information for the formula
+        formula.setUpgradedFrom(formula.getId());
+        formula.setVersionId(formula.getVersionId() + 1);
+
+        // mark the old formula as "out of date"
+        var oldFormula = this.findById(formula.getId());
+        oldFormula.setStatus(EntityStatus.OUT_OF_DATE);
+        this.formulaRepository.save(formula);
+
+        this.create(formula);
+    }
+
 }

@@ -113,7 +113,7 @@ public class AuthenticationService {
     }
 
     protected AuthenticationResponse createAuthenticationResponse(UserEntity user) {
-        if (user.getStatus().equals("ACTIVE")) {
+        if (!user.getStatus().equals("ACTIVE")) {
             throw new CrdmUnauthorizedException("This account has been suspended. Please contact service manager.");
         }
 
@@ -121,7 +121,7 @@ public class AuthenticationService {
     }
 
     protected AuthenticationResponse refreshAuthentication(UserEntity user, String refreshToken, Instant expiresAt) {
-        if (user.getStatus().equals("ACTIVE")) {
+        if (!user.getStatus().equals("ACTIVE")) {
             throw new CrdmUnauthorizedException("This account has been suspended. Please contact service administrator.");
         }
 

@@ -16,8 +16,8 @@ public class CrdmEntity<ID> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private ID id;
+    protected ID id;
 
-    private String status;
+    protected String status;
 
 }

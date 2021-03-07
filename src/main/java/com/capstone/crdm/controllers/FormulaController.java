@@ -29,4 +29,11 @@ public class FormulaController extends CrdmController<FormulaEntity, Integer, Fo
         return ResponseEntity.ok(id);
     }
 
+    @PatchMapping(path = "/{id}/upgrade")
+    public ResponseEntity<?> upgrade(@PathVariable Integer id, @RequestBody FormulaEntity formula) {
+        formula.setId(id);
+        this.formulaService.upgrade(formula);
+        return ResponseEntity.ok(id);
+    }
+
 }

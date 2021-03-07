@@ -14,4 +14,6 @@ public class EntityStatus {
 
     public static final String IN_PRODUCTION = "IN_PRODUCTION";
 
+    public static final String OUT_OF_DATE = "OUT_OF_DATE";
+
 }
