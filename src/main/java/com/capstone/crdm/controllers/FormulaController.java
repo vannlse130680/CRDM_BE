@@ -4,12 +4,10 @@ import com.capstone.crdm.entities.FormulaEntity;
 import com.capstone.crdm.repositories.FormulaRepository;
 import com.capstone.crdm.services.CrdmService;
 import com.capstone.crdm.services.FormulaService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@SuppressWarnings("unused")
 @RequestMapping(path = "/formula")
 @RestController
 public class FormulaController extends CrdmController<FormulaEntity, Integer, FormulaRepository> {
@@ -23,6 +21,12 @@ public class FormulaController extends CrdmController<FormulaEntity, Integer, Fo
     @Override
     protected CrdmService<FormulaEntity, Integer, FormulaRepository> getService() {
         return this.formulaService;
+    }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<?> deployToProduction(@PathVariable Integer id, @RequestBody String status) {
+        this.formulaService.updateFormulaStatus(id, status);
+        return ResponseEntity.ok(id);
     }
 
 }

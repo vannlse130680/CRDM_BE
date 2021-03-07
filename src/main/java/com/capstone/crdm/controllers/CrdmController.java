@@ -4,6 +4,7 @@ import com.capstone.crdm.entities.CrdmEntity;
 import com.capstone.crdm.model.QueryModel;
 import com.capstone.crdm.repositories.CrdmRepository;
 import com.capstone.crdm.services.CrdmService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.CacheControl;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 public abstract class CrdmController<E extends CrdmEntity<ID>, ID, R extends CrdmRepository<E, ID>> {
 
@@ -38,7 +40,7 @@ public abstract class CrdmController<E extends CrdmEntity<ID>, ID, R extends Crd
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody E entity) {
+    public ResponseEntity<URI> create(@RequestBody E entity) {
         try {
             E createdEntity = this.getService().create(entity);
             return ResponseEntity.created(URI.create(this.getUriPrefix() + "/" + createdEntity.getId())).build();

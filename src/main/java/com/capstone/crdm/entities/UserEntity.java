@@ -2,6 +2,7 @@ package com.capstone.crdm.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "users")
-public class UserEntity extends CrdmEntity<Integer> {
+public class UserEntity extends CrdmEntity<Integer> implements Cloneable {
 
     private String username;
 
@@ -33,4 +34,10 @@ public class UserEntity extends CrdmEntity<Integer> {
     @Transient
     private int roleId;
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        var clonedUser = super.clone();
+        BeanUtils.copyProperties(this, clonedUser);
+        return clonedUser;
+    }
 }
