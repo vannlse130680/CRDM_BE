@@ -27,3 +27,5 @@ crdm:
         keystore-name: crdm-keystore
         alias: crdm
         password: 42zzVL4Qms3FG-2p+SXShP53tqdAQ-HX
+    password:
+      default-password: 123456
