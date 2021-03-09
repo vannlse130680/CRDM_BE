@@ -3,7 +3,6 @@ package com.capstone.crdm.controllers;
 import com.capstone.crdm.request.AuthenticationRequest;
 import com.capstone.crdm.security.authentication.AuthenticationResponse;
 import com.capstone.crdm.security.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
