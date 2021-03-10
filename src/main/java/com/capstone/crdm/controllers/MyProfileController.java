@@ -1,19 +1,25 @@
 package com.capstone.crdm.controllers;
 
 import com.capstone.crdm.entities.UserEntity;
+import com.capstone.crdm.security.utils.AuthorizationUtils;
 import com.capstone.crdm.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("unused")
-@RequestMapping(path = "/profile")
+@RequestMapping(path = "/my-profile")
 @RestController
-public class ProfileController {
+public class MyProfileController {
 
     private final UserService userService;
 
-    public ProfileController(UserService userService) {
+    public MyProfileController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public ResponseEntity<UserEntity> getProfile() {
+        return ResponseEntity.ok(this.userService.findById(AuthorizationUtils.getCurrentUserId()));
     }
 
     @PutMapping
