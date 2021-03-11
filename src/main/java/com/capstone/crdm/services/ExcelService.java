@@ -1,5 +1,6 @@
 package com.capstone.crdm.services;
 
+import com.capstone.crdm.entities.FormulaEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -276,6 +277,10 @@ public class ExcelService {
 
         Cell lowerTrueValueHeader = twelfthRow.createCell(6);
         lowerTrueValueHeader.setCellStyle(lowerBordered.copy());
+    }
+
+    private static void printIngredientsTable(XSSFWorkbook workbook, FormulaEntity formula) {
+
     }
 
 }

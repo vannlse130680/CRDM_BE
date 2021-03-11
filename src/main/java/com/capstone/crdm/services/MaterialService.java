@@ -1,8 +1,10 @@
 package com.capstone.crdm.services;
 
 import com.capstone.crdm.entities.MaterialEntity;
+import com.capstone.crdm.entities.MaterialTypeEntity;
 import com.capstone.crdm.entities.UserEntity;
 import com.capstone.crdm.repositories.MaterialRepository;
+import com.capstone.crdm.repositories.MaterialTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,14 +16,21 @@ public class MaterialService extends CrdmService<MaterialEntity, Integer, Materi
 
    private final MaterialRepository materialRepository;
 
-    public MaterialService(MaterialRepository productRepository) {
+   private final MaterialTypeRepository materialTypeRepository;
+
+    public MaterialService(MaterialRepository productRepository, MaterialTypeRepository materialTypeRepository) {
         super(MaterialEntity.class);
         this.materialRepository = productRepository;
+        this.materialTypeRepository = materialTypeRepository;
     }
 
     @Override
     protected MaterialRepository getRepository() {
         return this.materialRepository;
+    }
+
+    public List<MaterialTypeEntity> getAllMaterialTypes() {
+        return new ArrayList<>((Collection<? extends MaterialTypeEntity>) this.materialTypeRepository.findAll());
     }
 
 }
