@@ -3,6 +3,7 @@ package com.capstone.crdm.services;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ExcelService {
         log.info("Excel file written to disk.");
     }
 
-    private static Font getBoldFont(XSSFWorkbook workbook) {
+    private static Font getBoldFont(XSSFWorkbook workbook, int fontSize, boolean bold) {
         XSSFFont font = workbook.createFont();
         font.setFontHeightInPoints((short) 11);
         font.setBold(true);
@@ -90,20 +91,43 @@ public class ExcelService {
         var qtsxSheet = workbook.getSheet("QTSX");
         var bomSheet = workbook.getSheet("BOM");
 
-        CellStyle normalStyle = workbook.createCellStyle();
+        // define styles
+        XSSFCellStyle normalStyle = workbook.createCellStyle();
         normalStyle.setBorderTop(BorderStyle.THIN);
         normalStyle.setBorderBottom(BorderStyle.THIN);
         normalStyle.setBorderLeft(BorderStyle.THIN);
         normalStyle.setBorderRight(BorderStyle.THIN);
         normalStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        CellStyle boldStyle = workbook.createCellStyle();
+        XSSFCellStyle boldStyle = workbook.createCellStyle();
         boldStyle.setBorderTop(BorderStyle.THIN);
         boldStyle.setBorderBottom(BorderStyle.THIN);
         boldStyle.setBorderLeft(BorderStyle.THIN);
         boldStyle.setBorderRight(BorderStyle.THIN);
-        boldStyle.setFont(ExcelService.getBoldFont(workbook));
+        boldStyle.setFont(ExcelService.getBoldFont(workbook, 11, true));
         boldStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        XSSFCellStyle boldStyleWrapped = workbook.createCellStyle();
+        boldStyleWrapped.setBorderTop(BorderStyle.THIN);
+        boldStyleWrapped.setBorderBottom(BorderStyle.THIN);
+        boldStyleWrapped.setBorderLeft(BorderStyle.THIN);
+        boldStyleWrapped.setBorderRight(BorderStyle.THIN);
+        boldStyleWrapped.setFont(ExcelService.getBoldFont(workbook, 11, true));
+        boldStyleWrapped.setVerticalAlignment(VerticalAlignment.CENTER);
+        boldStyleWrapped.setAlignment(HorizontalAlignment.CENTER);
+        boldStyleWrapped.setWrapText(true);
+
+        XSSFCellStyle lowerBordered = workbook.createCellStyle();
+        lowerBordered.setFont(ExcelService.getBoldFont(workbook, 11, true));
+        lowerBordered.setBorderBottom(BorderStyle.THIN);
+        lowerBordered.setBorderLeft(BorderStyle.THIN);
+        lowerBordered.setBorderRight(BorderStyle.THIN);
+
+        XSSFCellStyle rightBordered = workbook.createCellStyle();
+        rightBordered.setFont(ExcelService.getBoldFont(workbook, 11, true));
+        rightBordered.setBorderBottom(BorderStyle.THIN);
+        rightBordered.setBorderTop(BorderStyle.THIN);
+        rightBordered.setBorderRight(BorderStyle.THIN);
 
         // first row
         Row firstRow = batchSheet.createRow(1);
@@ -164,18 +188,94 @@ public class ExcelService {
         // fifth row
         Row fifthRow = batchSheet.createRow(5);
         fifthRow.setHeightInPoints(27);
-        Cell unitCostLabel = fifthRow.createCell(0);
+        Cell qualityLabel = fifthRow.createCell(0);
+        qualityLabel.setCellValue("Số lượng");
+
+        Cell expirationDate = fifthRow.createCell(9);
+        expirationDate.setCellValue("Hạn sử dụng:");
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("J6:K6"));
+
+        // fifth row
+        Row sixthRow = batchSheet.createRow(6);
+        sixthRow.setHeightInPoints(27);
+        Cell unitCostLabel = sixthRow.createCell(0);
         unitCostLabel.setCellValue("Hao hụt định mức:");
 
-        Cell bsLabel = fifthRow.createCell(5);
+        Cell bsLabel = sixthRow.createCell(5);
         bsLabel.setCellValue("Số BS:");
         bsLabel.setCellStyle(boldStyle);
 
         // sixth row
-        Row sixthRow = batchSheet.createRow(6);
-        sixthRow.setHeightInPoints(27);
-        Cell dLabel = sixthRow.createCell(0);
+        Row seventhRow = batchSheet.createRow(7);
+        seventhRow.setHeightInPoints(27);
+        Cell dLabel = seventhRow.createCell(0);
         dLabel.setCellValue("d (g/ml) ");
+
+        // draw ingredients table
+        Row eleventhRow = batchSheet.createRow(10);
+        Row twelfthRow = batchSheet.createRow(11);
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("A11:A12"));
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("B11:B12"));
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("D11:D12"));
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("E11:F11"));
+        batchSheet.addMergedRegion(CellRangeAddress.valueOf("G11:G12"));
+
+        // Number
+        Cell numberColumnHeader = eleventhRow.createCell(0);
+        numberColumnHeader.setCellValue("STT");
+        numberColumnHeader.setCellStyle(boldStyle.copy());
+
+        Cell lowerNumberColumnHeader = twelfthRow.createCell(0);
+        lowerNumberColumnHeader.setCellStyle(lowerBordered.copy());
+
+        // Phase
+        Cell phaseColumnHeader = eleventhRow.createCell(1);
+        phaseColumnHeader.setCellValue("Pha");
+        phaseColumnHeader.setCellStyle(boldStyle);
+
+        Cell lowerPhaseColumnHeader = twelfthRow.createCell(1);
+        lowerPhaseColumnHeader.setCellStyle(lowerBordered.copy());
+
+        // Ingredients
+        Cell ingredientHeader = eleventhRow.createCell(2);
+        ingredientHeader.setCellValue("Nguyên liệu");
+        ingredientHeader.setCellStyle(boldStyle);
+
+        Cell commercialNameHeader = twelfthRow.createCell(2);
+        commercialNameHeader.setCellValue("Tên thương mại");
+        commercialNameHeader.setCellStyle(boldStyle);
+
+        // Ratio
+        Cell ratioHeader = eleventhRow.createCell(3);
+        ratioHeader.setCellValue("Tỉ lệ\n (%w/w)");
+        ratioHeader.setCellStyle(boldStyleWrapped);
+
+        Cell lowerRatioHeaderr = twelfthRow.createCell(3);
+        lowerRatioHeaderr.setCellStyle(lowerBordered.copy());
+
+        // klcqd
+        Cell klcqdHeader = eleventhRow.createCell(4);
+        klcqdHeader.setCellValue("Khối lượng cân quy định");
+        klcqdHeader.setCellStyle(boldStyleWrapped);
+
+        Cell rightKlcqdHeader = eleventhRow.createCell(5);
+        rightKlcqdHeader.setCellStyle(rightBordered);
+
+        Cell gHeader = twelfthRow.createCell(4);
+        gHeader.setCellValue("g");
+        gHeader.setCellStyle(boldStyleWrapped);
+
+        Cell toleranceHeader = twelfthRow.createCell(5);
+        toleranceHeader.setCellValue("Dung sai");
+        toleranceHeader.setCellStyle(boldStyleWrapped);
+
+        // measured value
+        Cell trueValueHeader = eleventhRow.createCell(6);
+        trueValueHeader.setCellValue("Thực tế");
+        trueValueHeader.setCellStyle(boldStyleWrapped);
+
+        Cell lowerTrueValueHeader = twelfthRow.createCell(6);
+        lowerTrueValueHeader.setCellStyle(lowerBordered.copy());
     }
 
 }
